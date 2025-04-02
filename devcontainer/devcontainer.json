@@ -1,0 +1,20 @@
+{
+  "name": "TravelBot",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "postCreateCommand": "bash setup.sh",
+  "forwardPorts": [7860],
+  "portsAttributes": {
+    "7860": {
+      "label": "TravelBot Web UI",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter"
+      ]
+    }
+  }
+}
