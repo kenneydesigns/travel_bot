@@ -1,113 +1,114 @@
-# 🛫 TravelBot: Air Force PCS Chatbot (LLaMA + LangChain + RAG)
+# TravelBot
 
-Get started with TravelBot using GitHub Codespaces or your local environment. TravelBot helps answer PCS and TDY questions using official sources like the JTR and DAFI36-3003.
+**AF PCS Travel Assistant powered by RAG + LangChain + Hugging Face LLMs**
 
----
-
-
-## 🚀 Setup Guide
-
-### 1. **Create a Codespace**
-- Click the green “Code” button on this repo.
-- Select “Create codespace on main”.
+TravelBot is a lightweight Retrieval-Augmented Generation (RAG) chatbot that answers questions using uploaded Joint Travel Regulation (JTR) and DAFI (Department of the Air Force Instruction) content. This version is designed to be deployed instantly in GitHub Codespaces.
 
 ---
 
-### 2. **Wait for Setup Script**
-git add .devcontainer/devcontainer.json setup.sh
-git commit -m "Add devcontainer + executable setup.sh"
-git push
+## 🧰 Features
+
+- Uses Hugging Face's `flan-t5-small` or `flan-t5-base` for fast, CPU-compatible inference
+- Supports LangChain's `RetrievalQA` pipeline with a local FAISS vectorstore
+- Semantic chunk indexing of `.txt` files placed in `rag/jtr_chunks/`
+- Setup script builds your environment and prepares the index automatically
 
 ---
 
-### 3. **Start TravelBot**
-In the terminal, run:
+## 🚀 Quick Start in Codespaces
+
+1. **Open this repo in GitHub Codespaces**
+2. Setup will run automatically from `devcontainer.json`
+3. After setup completes, activate your virtual environment:
+
+   ```bash
+   source .venv/bin/activate
+   ```
+
+4. Start the bot:
+
+   ```bash
+   python app.py
+   ```
+
+5. Ask questions like:
+
+   - "How many days of parental leave can I take?"
+   - "What receipts do I need for my PCS move?"
+
+---
+
+## 🛠 Folder Structure
 
 ```bash
-source .venv/bin/activate
-python app.py
-```
-
-Then open the forwarded port at:
-
-```
-http://localhost:7860
+├── app.py                  # Main CLI chat app
+├── setup.sh                # Environment setup script
+├── rag/
+│   ├── build_index.py      # Converts text chunks into FAISS vectorstore
+│   ├── retrieve_context.py # (optional) Context chunk retriever helper
+│   └── jtr_chunks/         # Folder for regulation .txt files
+├── vectordb/               # Saved FAISS index (auto-generated)
+├── requirements.txt        # Python dependencies
 ```
 
 ---
 
-### 4. **Ask Your First Question**
+## 📄 Adding Your Own Content
 
-Use the web form to ask:
-- What receipts do I need to keep for PCS?
-- Can I use my GTC for fuel?
-- What’s the difference between DTS and eFinance?
-
----
-
-### 5. **Use Locally (Optional)**
+1. Add your `.txt` files to `rag/jtr_chunks/`
+2. Run:
 
 ```bash
-git clone https://github.com/kenneydesigns/travel_bot.git
-cd travel_bot
-python3 -m venv .venv
-source .venv/bin/activate
-bash setup.sh
+python rag/build_index.py
 ```
+
+This will rebuild the FAISS vector index.
 
 ---
 
-### 6. **Use Ollama Locally (Optional)**
+## 🔄 Switching Models
+
+The default model is `flan-t5-small`. To improve performance:
+
+```python
+model_id = "google/flan-t5-base"
+```
+
+Update this line in `app.py` to improve answer quality at the cost of slightly more memory.
+
+---
+
+## ⚙️ Switching to Local Ollama LLM (Optional)
+
+This bot supports both Hugging Face models and local Ollama setups.
+
+- `setup.sh` auto-detects your environment
+- For local mode, install [Ollama](https://ollama.com) and run:
 
 ```bash
-curl -fsSL https://ollama.com/install.sh | sh
 ollama pull tinyllama
 ```
 
 ---
 
-### 7. **Expose Public URL (Optional)**
+## 📚 Referenced Sources
 
-```bash
-cloudflared tunnel --url http://localhost:7860
-```
-
----
-
-## 🧾 Project Structure
-
-```
-├── app.py
-├── rag/
-│   ├── build_index.py
-│   ├── retrieve_context.py
-│   ├── jtr_chunks/
-├── models/
-├── web/templates/
-├── data/
-│   ├── JTR.pdf
-│   └── dafi36-3003.pdf
-├── setup.sh
-├── requirements.txt
-```
+- JTR PDF (03/01/2025 edition)
+- DAFI 36-3003 (7 August 2024)
+- Regulation-specific `.txt` files placed in `rag/jtr_chunks/`
 
 ---
 
-## 🧬 Contributing
+## ✅ Status
 
-- Submit new regulation chunks to `rag/jtr_chunks/`
-- Suggest UI/UX improvements or integrations
-- Pull requests welcome!
+This is a working RAG prototype designed for rapid deployment, expansion, and experimentation.
 
----
-
-## 🧺 Credits
-
-- Built by [@kenneydesigns](https://github.com/kenneydesigns)
-- LLaMA by Ollama
-- RAG with FAISS + LangChain
-- UI with Flask
+Coming soon:
+- [ ] Chat memory
+- [ ] Source citation formatting
+- [ ] Web UI (Gradio/FastAPI)
+- [ ] Auto-chunker for PDFs
 
 ---
 
-Happy building! 🦙
+Contributions welcome — fork and extend!
