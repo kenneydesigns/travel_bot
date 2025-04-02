@@ -1,8 +1,8 @@
 USE_OLLAMA = False  # Set to True for local Ollama, False for Hugging Face
 
-from langchain.vectorstores import FAISS
-from langchain.chains import RetrievalQA
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.llms import HuggingFacePipeline
 
 if USE_OLLAMA:
     from langchain.llms import Ollama
