@@ -28,6 +28,12 @@ else:
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
 # Load the vector DB
+import os
+if not os.path.exists("vectordb/travelbot.faiss"):
+    print("🧠 Vector index not found. Rebuilding now...")
+    import subprocess
+    subprocess.run(["python", "rag/build_index.py"])
+
 db = FAISS.load_local(
     "vectordb",
     embeddings=embeddings,
