@@ -4,11 +4,6 @@ Get started with TravelBot using GitHub Codespaces or your local environment. Tr
 
 ---
 
-### 🟢 One-Click Setup with Codespaces
-
-[![Open in Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?repository=kenneydesigns/travelbot-llama-rag&ref=main)
-
----
 
 ## 🚀 Setup Guide
 
