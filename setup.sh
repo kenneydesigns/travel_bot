@@ -17,6 +17,7 @@ pip install --upgrade pip
 pip install -r requirements.txt
 # Ensure new modular packages are installed
 pip install -U langchain-community
+pip install -U langchain-community transformers
 
 # Auto-build embeddings if chunk files exist
 echo "🧠 Building semantic index..."
