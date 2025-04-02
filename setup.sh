@@ -15,6 +15,7 @@ echo "source .venv/bin/activate"
 . .venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
+pip install langchain faiss-cpu sentence-transformers flask
 
 # Auto-build embeddings if chunk files exist
 echo "🧠 Building semantic index..."
