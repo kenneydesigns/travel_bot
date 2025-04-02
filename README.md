@@ -14,7 +14,7 @@ Get started with TravelBot using GitHub Codespaces or your local environment. Tr
 ---
 
 ### 2. **Wait for Setup Script**
-- git add .devcontainer/devcontainer.json setup.sh
+git add .devcontainer/devcontainer.json setup.sh
 git commit -m "Add devcontainer + executable setup.sh"
 git push
 
