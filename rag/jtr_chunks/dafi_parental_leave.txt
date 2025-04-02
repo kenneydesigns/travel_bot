@@ -1,0 +1,6 @@
+=== Parental Leave (DAFI 36-3003, Aug 2024) ===
+
+- 12 weeks of non-chargeable parental leave per parent.
+- Applies for birth, adoption, or long-term foster placement.
+- Leave must be taken within 1 year of qualifying event.
+- Documented via LeaveWeb and approved by commander.

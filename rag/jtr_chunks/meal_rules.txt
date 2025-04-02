@@ -1,0 +1,8 @@
+=== Meal Reimbursement Rules ===
+
+- Meal receipts are not required if claiming per diem (M&IE).
+- If meals are provided at no cost (e.g., training, conference, or base dining), they must be deducted.
+- Complimentary hotel breakfasts do not reduce M&IE.
+- MREs do not count as provided meals unless ordered.
+
+Actual Expense Allowance (AEA) for meals requires full receipts and justification.

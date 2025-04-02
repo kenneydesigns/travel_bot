@@ -1,0 +1,6 @@
+=== Housing Allowance Overview ===
+
+- BAH (Basic Allowance for Housing) is provided for CONUS assignments and based on duty location, pay grade, and dependent status.
+- OHA (Overseas Housing Allowance) is provided for OCONUS locations and reimburses actual rent and utilities, up to a cap.
+- You cannot receive both BAH and OHA at the same time.
+- BAH is taxable; OHA is not.

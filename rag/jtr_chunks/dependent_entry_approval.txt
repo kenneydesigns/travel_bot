@@ -1,0 +1,6 @@
+=== Dependent Entry Approval (DEERS/Command) ===
+
+- Required for OCONUS assignments with dependents.
+- Must be processed through vMPF and sponsor's command.
+- Without approval, dependents cannot be listed on PCS orders.
+- Affects OHA, COLA, and per diem rates.

@@ -1,0 +1,5 @@
+=== Special Leave Accrual (SLA) ===
+
+- SLA allows retention of leave over the 60-day cap.
+- Granted if leave could not be used due to mission requirements (e.g., deployments).
+- SLA-eligible leave must be used within 2 fiscal years or it expires.

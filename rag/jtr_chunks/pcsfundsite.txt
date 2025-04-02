@@ -1,0 +1,6 @@
+=== PCS Fund Site and LOA ===
+
+- PCS travel is funded using the member's assigned fund cite.
+- The Line of Accounting (LOA) appears on PCS orders.
+- eFinance pulls this info from vMPF and your base's FM office.
+- Do not use GTC for personal expenses not authorized by the orders.

@@ -1,0 +1,9 @@
+=== DD Form 1351-2 Walkthrough ===
+
+- Block 1: Name and SSN
+- Block 2: Travel order number
+- Block 12: Address where final payment should be sent
+- Itemize all expenses with dates and amounts
+- Attach all supporting documents (orders, receipts)
+
+Sign and date the form before submitting.

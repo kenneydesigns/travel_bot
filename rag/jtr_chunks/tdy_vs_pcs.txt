@@ -1,0 +1,11 @@
+=== TDY vs PCS Travel ===
+
+TDY (Temporary Duty):
+- Short-term assignment away from permanent station
+- Does not include dependent travel
+- Use DTS for travel vouchers
+
+PCS (Permanent Change of Station):
+- Long-term relocation to a new base
+- Includes dependent travel, DLA, and shipment of HHG
+- Use eFinance for travel voucher submission

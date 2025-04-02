@@ -1,0 +1,7 @@
+=== Temporary Lodging Expense (TLE) ===
+
+- TLE reimburses lodging and meal costs incurred in the CONUS during PCS.
+- You may claim up to 5 days at the losing or gaining installation.
+- Must use commercial lodging or base lodging when available.
+- Reimbursement is based on actual expenses, not a flat rate.
+- Submit TLE claims via eFinance with itemized lodging receipts.
