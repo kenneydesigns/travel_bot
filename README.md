@@ -17,6 +17,21 @@ TravelBot is a lightweight Retrieval-Augmented Generation (RAG) chatbot that ans
 ---
 
 ## 🚀 Quick Start in Codespaces
+### 🧠 Option: Use ChunkBot Instead (Direct Regulation Viewer)
+
+Instead of running the AI summarizer by default, you can use the `chunkbot.py` tool.
+
+```bash
+python chunkbot.py
+```
+
+This version will:
+- Retrieve the most relevant regulation `.txt` chunks from `rag/jtr_chunks/`
+- Show their contents clearly
+- Optionally summarize with AI
+
+This is ideal for accuracy and avoiding hallucinated answers.
+
 **⚠️ If setup fails**, you can re-run it manually:
 ```bash
 bash setup.sh
