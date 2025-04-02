@@ -1,0 +1,5 @@
+=== Maternity Convalescent Leave ===
+- Non-chargeable leave for birth parents to recover post-delivery.
+- Must be supported by MTF documentation.
+- Typically 6 weeks, separate from parental leave.
+- Refer to DAFI 36-3003, Section 3.1.

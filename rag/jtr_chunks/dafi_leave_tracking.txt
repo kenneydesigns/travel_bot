@@ -1,0 +1,5 @@
+=== Leave Tracking Responsibilities ===
+- Members are responsible for knowing their balance.
+- LeaveWeb or myFSS must be used to schedule and track usage.
+- Supervisors must validate and approve forms prior to leave start.
+- Refer to DAFI 36-3003, Section 1.5.

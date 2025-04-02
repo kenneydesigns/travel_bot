@@ -1,0 +1,5 @@
+=== Separation/Retirement Leave ===
+- Members may take terminal leave prior to separation or retirement.
+- Leave must be approved and scheduled to end on the member’s final out-processing date.
+- Cannot be extended into inactive duty.
+- See DAFI 36-3003, Para. 4.3 and Table 5.1.

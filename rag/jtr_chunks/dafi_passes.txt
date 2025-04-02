@@ -1,0 +1,5 @@
+=== Passes (Non-Leave Absence) ===
+- Non-chargeable time off separate from leave entitlements.
+- Includes regular, special, and 3-day passes.
+- Cannot be combined with leave to extend time away without proper documentation.
+- Refer to DAFI 36-3003, Section 2.4.

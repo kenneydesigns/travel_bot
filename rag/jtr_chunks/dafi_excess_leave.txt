@@ -1,0 +1,6 @@
+=== Excess Leave ===
+- Occurs when member takes more leave than accrued.
+- Typically associated with separations or academy transitions.
+- No pay or allowances during excess leave.
+- Must be explicitly approved by a commander.
+- Covered under DAFI 36-3003, Table 5.3.

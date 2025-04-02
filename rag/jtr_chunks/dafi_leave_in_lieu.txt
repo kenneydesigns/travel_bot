@@ -1,0 +1,5 @@
+=== Leave in Lieu of Awards ===
+- Rare cases where leave may be granted instead of official awards.
+- Requires high-level command approval.
+- Leave is typically chargeable unless otherwise documented.
+- Governed by DAFI 36-3003 with AF-level guidance.
