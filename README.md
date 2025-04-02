@@ -11,6 +11,7 @@ TravelBot is a lightweight Retrieval-Augmented Generation (RAG) chatbot that ans
 - Uses Hugging Face's `flan-t5-small` or `flan-t5-base` for fast, CPU-compatible inference
 - Supports LangChain's `RetrievalQA` pipeline with a local FAISS vectorstore
 - Semantic chunk indexing of `.txt` files placed in `rag/jtr_chunks/`
+- Persistent prompt guidance from `.txt` files in `context/`
 - Setup script builds your environment and prepares the index automatically
 
 ---
@@ -47,6 +48,7 @@ TravelBot is a lightweight Retrieval-Augmented Generation (RAG) chatbot that ans
 │   ├── build_index.py      # Converts text chunks into FAISS vectorstore
 │   ├── retrieve_context.py # (optional) Context chunk retriever helper
 │   └── jtr_chunks/         # Folder for regulation .txt files
+├── context/                # Prompt-level context files (not embedded)
 ├── vectordb/               # Saved FAISS index (auto-generated)
 ├── requirements.txt        # Python dependencies
 ```
@@ -55,6 +57,7 @@ TravelBot is a lightweight Retrieval-Augmented Generation (RAG) chatbot that ans
 
 ## 📄 Adding Your Own Content
 
+### 🔹 Regulation Files (JTR/DAFI)
 1. Add your `.txt` files to `rag/jtr_chunks/`
 2. Run:
 
@@ -63,6 +66,10 @@ python rag/build_index.py
 ```
 
 This will rebuild the FAISS vector index.
+
+### 🔹 Prompt Context Files
+Add `.txt` files to the `context/` folder (e.g., `bot_intro.txt`, `tone.txt`, `definitions.txt`).  
+These are **automatically loaded and prepended** to each question to improve response quality and consistency.
 
 ---
 
@@ -96,6 +103,7 @@ ollama pull tinyllama
 - JTR PDF (03/01/2025 edition)
 - DAFI 36-3003 (7 August 2024)
 - Regulation-specific `.txt` files placed in `rag/jtr_chunks/`
+- Prompt formatting and tone guidance from `.txt` files in `context/`
 
 ---
 
