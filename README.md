@@ -24,6 +24,7 @@ git push
 In the terminal, run:
 
 ```bash
+source .venv/bin/activate
 python app.py
 ```
 
