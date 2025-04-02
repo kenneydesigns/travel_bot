@@ -27,8 +27,6 @@ pipe = pipeline(
 
 llm = HuggingFacePipeline(pipeline=pipe)
 
-
-
 db = FAISS.load_local(
     "vectordb",
     HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2"),
@@ -44,15 +42,26 @@ qa_chain = RetrievalQA.from_chain_type(
     return_source_documents=True
 )
 
+# Load system context
+with open("context/bot_intro.txt", "r") as f:
+    intro_context = f.read()
 
-# Simple CLI loop
+# ✅ Final single CLI block
 if __name__ == "__main__":
     print("✈️ AF TravelBot is ready. Ask your JTR/DAFI questions.")
     while True:
         query = input("\n> ")
         if query.lower() in ["exit", "quit"]:
             break
-        result = qa_chain(query)
+
+        # Inject system prompt with user query
+        prompt = f"""{intro_context}
+
+User question: {query}
+Answer:"""
+
+        result = qa_chain(prompt)
+
         print("\nAnswer:\n", result["result"])
         print("\nSources:")
         for doc in result["source_documents"]:
