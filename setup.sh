@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#!/bin/bash
+
 echo "🚀 TravelBot Setup Script"
 
 # Create folders early
@@ -11,23 +13,22 @@ python3 -m venv .venv
 echo "💡 Virtual environment created. To activate manually:"
 echo "source .venv/bin/activate"
 
-# Install dependencies
+# Activate virtual environment
 . .venv/bin/activate
+
+# Install dependencies
 pip install --upgrade pip
 pip install -r requirements.txt
-# Ensure new modular packages are installed
-pip install -U langchain-community
-pip install -U langchain-community transformers
 pip install torch
-pip install sentence-transformers
-pip install -U langchain-community transformers torch sentence-transformers
-pip install faiss-cpu
+
+# Ensure critical packages are installed (in case requirements.txt misses them)
+pip install -U langchain-community transformers torch sentence-transformers faiss-cpu
 
 # Auto-build embeddings if chunk files exist
 echo "🧠 Building semantic index..."
 python rag/build_index.py
 
-# Set execution mode
+# Detect mode and set app flags
 if [ "$CODESPACES" = "true" ]; then
   echo "🌐 Detected Codespaces environment. Using Hugging Face mode by default."
   sed -i.bak 's/USE_OLLAMA = True/USE_OLLAMA = False/' app.py
@@ -36,7 +37,7 @@ else
   echo ""
   echo "Choose the mode to run TravelBot:"
   echo "1. Local (Ollama + TinyLLaMA)"
-  echo "2. Codespaces / Hugging Face (Flan-T5)"
+  echo "2. Codespaces / Hugging Face (Flan-T5 or TinyLLaMA)"
   read -p "Enter 1 or 2: " mode_choice
 
   if [ "$mode_choice" == "1" ]; then

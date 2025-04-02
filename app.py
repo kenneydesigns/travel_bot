@@ -1,103 +1,59 @@
-USE_OLLAMA = False  # Set to True for local Ollama, False for Hugging Face
+import os
+import torch
 
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain.chains import RetrievalQA
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
 from langchain_community.llms import HuggingFacePipeline
 
-if USE_OLLAMA:
-    from langchain.llms import Ollama
-    from langchain.embeddings.ollama import OllamaEmbeddings
+model_id = "google/flan-t5-small"
 
-    print("💻 Running in LOCAL mode using Ollama + TinyLLaMA")
-    embeddings = OllamaEmbeddings(model="tinyllama")
-    llm = Ollama(model="tinyllama")
+print("🪶 Loading lightweight model: FLAN-T5 Small...")
 
-else:
-    from langchain.llms import HuggingFacePipeline
-    from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
+tokenizer = AutoTokenizer.from_pretrained(model_id)
 
-    print("🌐 Running in CODESPACES mode using Hugging Face model")
-    model_id = "google/flan-t5-base"
+model = AutoModelForSeq2SeqLM.from_pretrained(
+    model_id,
+    device_map="auto"
+)
 
-    tokenizer = AutoTokenizer.from_pretrained(model_id)
-    model = AutoModelForSeq2SeqLM.from_pretrained(model_id)
+pipe = pipeline(
+    "text2text-generation",
+    model=model,
+    tokenizer=tokenizer,
+    max_new_tokens=512
+)
 
-    pipe = pipeline("text2text-generation", model=model, tokenizer=tokenizer, max_length=512)
-    llm = HuggingFacePipeline(pipeline=pipe)
+llm = HuggingFacePipeline(pipeline=pipe)
 
-    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
-# Load the vector DB
-import os
-if not os.path.exists("vectordb/travelbot.faiss"):
-    print("🧠 Vector index not found. Rebuilding now...")
-    import subprocess
-    subprocess.run(["python", "rag/build_index.py"])
 
 db = FAISS.load_local(
     "vectordb",
-    embeddings=embeddings,
+    HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2"),
     index_name="travelbot",
     allow_dangerous_deserialization=True
 )
 
-# Create chain
-qa = RetrievalQA.from_chain_type(llm=llm, retriever=db.as_retriever())
+retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 3})
 
-# Chat loop
-print("TravelBot is ready. Ask a question or type 'exit'.")
-while True:
-    query = input("You: ")
-    if query.lower() in ["exit", "quit"]:
-        break
-    answer = qa.run(query)
-    print("Bot:", answer)
-with open("chat_log.txt", "a") as log:
-    log.write(f"\n---\nQ: {question}\nA: {answer}\n")
-USE_OLLAMA = False  # Set to True for local Ollama, False for Hugging Face
+qa_chain = RetrievalQA.from_chain_type(
+    llm=llm,
+    retriever=retriever,
+    return_source_documents=True
+)
 
-from langchain.vectorstores import FAISS
-from langchain.chains import RetrievalQA
-from langchain.embeddings import HuggingFaceEmbeddings
 
-if USE_OLLAMA:
-    from langchain.llms import Ollama
-    from langchain.embeddings.ollama import OllamaEmbeddings
-
-    print("💻 Running in LOCAL mode using Ollama + TinyLLaMA")
-    embeddings = OllamaEmbeddings(model="tinyllama")
-    llm = Ollama(model="tinyllama")
-
-else:
-    from langchain.llms import HuggingFacePipeline
-    from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
-
-    print("🌐 Running in CODESPACES mode using Hugging Face model")
-    model_id = "google/flan-t5-base"
-
-    tokenizer = AutoTokenizer.from_pretrained(model_id)
-    model = AutoModelForSeq2SeqLM.from_pretrained(model_id)
-
-    pipe = pipeline("text2text-generation", model=model, tokenizer=tokenizer, max_length=512)
-    llm = HuggingFacePipeline(pipeline=pipe)
-
-    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-
-# Load the vector DB
-db = FAISS.load_local("vectordb", embeddings=embeddings, index_name="travelbot")
-
-# Create QA chain
-qa = RetrievalQA.from_chain_type(llm=llm, retriever=db.as_retriever())
-
-# Chat loop
-print("🧳 TravelBot is ready. Ask a question or type 'exit'.")
-while True:
-    query = input("You: ")
-    if query.lower() in ["exit", "quit"]:
-        print("👋 TravelBot session ended.")
-        break
-    answer = qa.run(query)
-    print("Bot:", answer)
-
-    with open("chat_log.txt", "a") as log:
-        log.write(f"\n---\nQ: {query}\nA: {answer}\n")
+# Simple CLI loop
+if __name__ == "__main__":
+    print("✈️ AF TravelBot is ready. Ask your JTR/DAFI questions.")
+    while True:
+        query = input("\n> ")
+        if query.lower() in ["exit", "quit"]:
+            break
+        result = qa_chain(query)
+        print("\nAnswer:\n", result["result"])
+        print("\nSources:")
+        for doc in result["source_documents"]:
+            print(f"- {doc.metadata['source']}")
