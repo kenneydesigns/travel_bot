@@ -17,6 +17,10 @@ TravelBot is a lightweight Retrieval-Augmented Generation (RAG) chatbot that ans
 ---
 
 ## 🚀 Quick Start in Codespaces
+**⚠️ If setup fails**, you can re-run it manually:
+```bash
+bash setup.sh
+```
 
 1. **Open this repo in GitHub Codespaces**
 2. Setup will run automatically from `devcontainer.json`
