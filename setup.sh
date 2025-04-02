@@ -18,6 +18,10 @@ pip install -r requirements.txt
 # Ensure new modular packages are installed
 pip install -U langchain-community
 pip install -U langchain-community transformers
+pip install torch
+pip install sentence-transformers
+pip install -U langchain-community transformers torch sentence-transformers
+pip install faiss-cpu
 
 # Auto-build embeddings if chunk files exist
 echo "🧠 Building semantic index..."
