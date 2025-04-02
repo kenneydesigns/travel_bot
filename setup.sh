@@ -20,6 +20,7 @@ echo "source .venv/bin/activate"
 pip install --upgrade pip
 pip install -r requirements.txt
 pip install torch
+pip install accelerate
 
 # Ensure critical packages are installed (in case requirements.txt misses them)
 pip install -U langchain-community transformers torch sentence-transformers faiss-cpu
