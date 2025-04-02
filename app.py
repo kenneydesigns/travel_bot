@@ -28,7 +28,12 @@ else:
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
 # Load the vector DB
-db = FAISS.load_local("vectordb", embeddings=embeddings, index_name="travelbot")
+db = FAISS.load_local(
+    "vectordb",
+    embeddings=embeddings,
+    index_name="travelbot",
+    allow_dangerous_deserialization=True
+)
 
 # Create chain
 qa = RetrievalQA.from_chain_type(llm=llm, retriever=db.as_retriever())
