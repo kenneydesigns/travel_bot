@@ -61,8 +61,13 @@ User question: {query}
 Answer:"""
 
         result = qa_chain(prompt)
+        
+        response = result["result"].strip()
+if response.lower() in ["yes", "no"]:
+    response += "\n\n(Please verify details in the sources listed below. Travel entitlements may vary based on PCS type and location.)"
 
-        print("\nAnswer:\n", result["result"])
+
+        print("\nAnswer:\n", response)
         print("\nSources:")
         for doc in result["source_documents"]:
             print(f"- {doc.metadata['source']}")
