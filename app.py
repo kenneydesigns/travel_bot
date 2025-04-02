@@ -2,10 +2,10 @@ import os
 import torch
 
 from langchain_community.vectorstores import FAISS
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface.embeddings import HuggingFaceEmbeddings
 from langchain.chains import RetrievalQA
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
-from langchain_community.llms import HuggingFacePipeline
+from langchain_huggingface.llms import HuggingFacePipeline
 
 model_id = "google/flan-t5-small"
 
