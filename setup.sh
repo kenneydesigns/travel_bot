@@ -22,6 +22,7 @@ pip install -r requirements.txt
 pip install -U langchain-huggingface
 pip install torch
 pip install accelerate
+pip install langchain-huggingface
 
 
 # Ensure critical packages are installed (in case requirements.txt misses them)
