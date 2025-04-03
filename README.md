@@ -1,107 +1,49 @@
 # TravelBot
 
-**AF PCS Travel Assistant powered by RAG + LangChain + Hugging Face LLMs**
-
-TravelBot is a lightweight Retrieval-Augmented Generation (RAG) chatbot that answers questions using uploaded Joint Travel Regulation (JTR) and DAFI (Department of the Air Force Instruction) content. This version is designed to be deployed instantly in GitHub Codespaces.
+**TravelBot** is a regulation-grounded assistant designed to help users navigate Air Force travel rules (JTR, DAFI 36-3003, AFMAN 65-114) using Retrieval-Augmented Generation (RAG). It supports Hugging Face and Ollama LLMs and works seamlessly in GitHub Codespaces or on a local machine.
 
 ---
 
-## 🧰 Features
+## ✨ Features
 
-- Uses Hugging Face's `flan-t5-small` or `flan-t5-base` for fast, CPU-compatible inference
-- Supports LangChain's `RetrievalQA` pipeline with a local FAISS vectorstore
-- Semantic chunk indexing of `.txt` files placed in `rag/jtr_chunks/`
-- Persistent prompt guidance from `.txt` files in `context/`
-- Setup script builds your environment and prepares the index automatically
+- 🔍 Vector-based regulation search using LangChain + FAISS
+- 🤖 Friendly or Raw chatbot mode (via `retrieve_context.py`)
+- 📄 Direct chunk retrieval mode (via `chunkbot.py`)
+- 🧠 Prompt-aware assistant using `app.py` + context files
+- 📂 Auto-updated knowledge base from uploaded regulation PDFs
+- 🔁 Supports Hugging Face models *or* local Ollama LLMs
+- ⚡ Fast, lean, token-efficient, and customizable
 
 ---
 
-## 🚀 Quick Start in Codespaces
+## 🚀 Get Started in GitHub Codespaces or Locally
 
-**⚠️ If setup fails**, you can re-run it manually:
+1. Open the repo in GitHub Codespaces or clone locally  
+2. Run the setup script:
+
 ```bash
 bash setup.sh
 ```
 
-1. **Open this repo in GitHub Codespaces**
-2. Setup will run automatically from `devcontainer.json`
-3. After setup completes, activate your virtual environment:
-
-   ```bash
-   source .venv/bin/activate
-   ```
-
-4. Start the bot:
-
-   ```bash
-   python app.py
-   ```
-
-5. Ask questions like:
-
-   - "How many days of parental leave can I take?"
-   - "What receipts do I need for my PCS move?"
-### 🧠 Option: Use ChunkBot Instead (Direct Regulation Viewer)
-
-Instead of running the AI summarizer by default, you can use the `chunkbot.py` tool.
+3. Then activate your environment and run the chatbot:
 
 ```bash
-python chunkbot.py
+source .venv/bin/activate
+python retrieve_context.py --mode friendly
 ```
 
-This version will:
-- Retrieve the most relevant regulation `.txt` chunks from `rag/jtr_chunks/`
-- Show their contents clearly
-- Optionally summarize with AI
-
-This is ideal for accuracy and avoiding hallucinated answers.
+💡 If you’re testing from a fresh environment, this flow ensures everything is installed and indexed before your first question.
 
 ---
 
-## 🛠 Folder Structure
+## 🧠 How to Use TravelBot
 
-```bash
-├── app.py                  # Main CLI chat app
-├── setup.sh                # Environment setup script
-├── rag/
-│   ├── build_index.py      # Converts text chunks into FAISS vectorstore
-│   ├── retrieve_context.py # (optional) Context chunk retriever helper
-│   └── jtr_chunks/         # Folder for regulation .txt files
-├── context/                # Prompt-level context files (not embedded)
-├── vectordb/               # Saved FAISS index (auto-generated)
-├── requirements.txt        # Python dependencies
-```
-
----
-
-## 📄 Adding Your Own Content
-
-### 🔹 Regulation Files (JTR/DAFI)
-1. Add your `.txt` files to `rag/jtr_chunks/`
-2. Run:
-
-```bash
-python rag/build_index.py
-```
-
-This will rebuild the FAISS vector index.
-
-### 🔹 Prompt Context Files
-Add `.txt` files to the `context/` folder (e.g., `bot_intro.txt`, `tone.txt`, `definitions.txt`).  
-These are **automatically loaded and prepended** to each question to improve response quality and consistency.
-
----
-## 🧠 Run Modes
-
-You can use TravelBot through multiple entry points depending on your needs:
-
-### 1. `retrieve_context.py` – The Main Chatbot CLI
+### ✅ Option 1: `retrieve_context.py` – Flexible CLI Chatbot
 
 Supports two modes:
-- **Friendly mode** (default): uses an LLM to generate a helpful intro, then shows retrieved regulation chunks.
-- **Raw mode**: shows retrieved chunks only (no LLM).
+- `--mode friendly`: Uses an LLM to add a natural intro
+- `--mode raw`: Outputs regulation text only (no LLM generation)
 
-Run it like this:
 ```bash
 python retrieve_context.py --mode friendly
 python retrieve_context.py --mode raw
@@ -109,90 +51,104 @@ python retrieve_context.py --mode raw
 
 ---
 
-### 2. `chunkbot.py` – Direct Chunk Search
+### ✅ Option 2: `chunkbot.py` – Search-Only Tool
 
-- Retrieves the top 3 chunks using vector similarity.
-- No LLM, just raw regulation text.
-- Great for debugging or validating the source content.
+- No LLM used
+- Retrieves top regulation chunks directly
+- Great for debugging or validation
 
-Run:
 ```bash
 python chunkbot.py
 ```
 
 ---
 
-### 3. `app.py` – Alt Chatbot with Intro Context
+### ✅ Option 3: `app.py` – Prompt-Controlled Chatbot
 
-- Loads a system prompt from a file.
-- Uses LangChain's `RetrievalQA` for simpler setups.
-- Automatically trims inputs to stay under token limits.
+- Loads system prompt + tone guidance from `context/`
+- Uses LangChain's RetrievalQA chain
+- Token-limited, clean, predictable
 
-Run:
 ```bash
 python app.py
 ```
 
 ---
 
-## 🔄 Updating the Knowledge Base
+## 🔄 Updating the Regulation Knowledge Base
 
-1. Place new PDFs in:
+When JTR or DAFI updates:
+1. Drop PDFs into:
 ```
 rag/source_docs/
 ```
 
-2. Rebuild the chunks and vector index:
+2. Run:
 ```bash
 python update_knowledge_base.py
 ```
 
+This extracts text, chunks it with `RecursiveCharacterTextSplitter`, and rebuilds the FAISS vector index.
+
 ---
 
-## 🔄 Switching Models
+## 🧰 Folder Structure
 
-The default model is `flan-t5-small`. To improve performance:
-
-```python
-model_id = "google/flan-t5-base"
+```
+├── retrieve_context.py         # CLI chatbot with friendly/raw toggle
+├── chunkbot.py                 # Direct semantic chunk retriever
+├── app.py                      # Context-aware LLM QA chatbot
+├── update_knowledge_base.py    # Auto-chunker + vector index builder
+├── setup.sh                    # Bootstraps environment + installs dependencies
+├── context/                    # Optional .txt files for system prompt and tone
+├── rag/
+│   ├── jtr_chunks/             # .txt chunks from JTR/DAFI/AFMAN regs
+│   ├── source_docs/            # Drop your PDFs here
+├── vectordb/                   # FAISS index files (auto-generated)
+├── requirements.txt            # Dependency list
 ```
 
-Update this line in `app.py` to improve answer quality at the cost of slightly more memory.
-
 ---
 
-## ⚙️ Switching to Local Ollama LLM (Optional)
+## 🤖 Switching Between LLMs
 
-This bot supports both Hugging Face models and local Ollama setups.
+### Use a Hugging Face model:
+Inside `retrieve_context.py` or `app.py`, update:
+```python
+model_id = "google/flan-t5-small"  # or flan-t5-base
+```
 
-- `setup.sh` auto-detects your environment
-- For local mode, install [Ollama](https://ollama.com) and run:
-
+### Use local Ollama:
+1. Install [Ollama](https://ollama.com)
+2. Pull a model:
 ```bash
 ollama pull tinyllama
 ```
+3. Modify `setup.sh` or `retrieve_context.py` to load the Ollama LLM instead of Hugging Face
 
 ---
 
-## 📚 Referenced Sources
+## 📘 Source Materials
 
-- JTR PDF (03/01/2025 edition)
-- DAFI 36-3003 (7 August 2024)
-- Regulation-specific `.txt` files placed in `rag/jtr_chunks/`
-- Prompt formatting and tone guidance from `.txt` files in `context/`
-
----
-
-## ✅ Status
-
-This is a working RAG prototype designed for rapid deployment, expansion, and experimentation.
-
-Coming soon:
-- [ ] Chat memory
-- [ ] Source citation formatting
-- [ ] Web UI (Gradio/FastAPI)
-- [ ] Auto-chunker for PDFs
+TravelBot can index and respond based on:
+- JTR (March 2025)
+- DAFI 36-3003 (August 2024)
+- AFMAN 65-114 (current)
+- Any `.pdf` you drop into `rag/source_docs/`
 
 ---
 
-Contributions welcome — fork and extend!
+## 📅 Roadmap
+
+- [ ] Add Gradio or FastAPI web UI
+- [ ] Add chat memory / history
+- [ ] Add evaluator scoring / confidence indicator
+- [ ] Add embedded link-back to reg source section
+
+---
+
+## 🙌 Contributing
+
+Fork it, remix it, deploy it at your unit.  
+TravelBot is built to help Airmen and DoD staff get answers without combing through thousands of pages.
+
