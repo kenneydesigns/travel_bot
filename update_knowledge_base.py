@@ -12,14 +12,23 @@ INDEX_NAME = "travelbot"
 
 def extract_text_from_pdf(pdf_path):
     doc = fitz.open(pdf_path)
-    return "\n".join(page.get_text() for page in doc)
+    return "\n".join(page.get_text().strip() for page in doc)
 
 def split_and_save_chunks(text, base_filename):
     splitter = RecursiveCharacterTextSplitter(chunk_size=300, chunk_overlap=30)
     chunks = splitter.create_documents([text])
+    saved_count = 0
     for i, chunk in enumerate(chunks):
-        with open(os.path.join(CHUNK_DIR, f"{base_filename}_chunk{i}.txt"), "w") as f:
-            f.write(chunk.page_content)
+        if len(chunk.page_content.strip()) > 100:  # Filter out nearly empty chunks
+            chunk.metadata = {
+                "source": f"{base_filename}_chunk{i}.txt",
+                "chunk_index": i,
+                "origin": base_filename
+            }
+            with open(os.path.join(CHUNK_DIR, f"{base_filename}_chunk{i}.txt"), "w") as f:
+                f.write(chunk.page_content)
+            saved_count += 1
+    print(f"✅ Saved {saved_count} valid chunks for {base_filename}")
 
 def rebuild_vector_index():
     documents = []
@@ -34,6 +43,7 @@ def rebuild_vector_index():
 
 def run():
     os.makedirs(CHUNK_DIR, exist_ok=True)
+    os.makedirs(SOURCE_DIR, exist_ok=True)  # <-- Add this line
     print("🧹 Clearing old chunks...")
     for file in os.listdir(CHUNK_DIR):
         os.remove(os.path.join(CHUNK_DIR, file))
@@ -49,5 +59,3 @@ def run():
 
 if __name__ == "__main__":
     run()
-
-
