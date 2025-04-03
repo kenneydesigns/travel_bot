@@ -48,13 +48,8 @@ while True:
         print(f"\n📄 Source {i}: {doc.metadata['source']}")
         print(doc.page_content.strip())
 
-    summarize = input("\n📝 Summarize the retrieved content with AI? (y/n): ").strip().lower()
-    if summarize == "y":
-        combined = "\n\n".join([doc.page_content for doc in docs])
-        summary_prompt = (
-            "Summarize this travel guidance:\n\n"
-            + combined
-            + "\n\nSummary:"
-        )
-        summary = llm(summary_prompt)
-        print("\n💡 Summary:\n", summary)
+    # Instead of summarizing, just return:
+for i, doc in enumerate(docs, 1):
+    print(f"\n📄 Source {i}: {doc.metadata['source']}")
+    print(doc.page_content.strip())
+

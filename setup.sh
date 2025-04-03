@@ -13,16 +13,19 @@ python3 -m venv .venv
 echo "💡 Virtual environment created. To activate manually:"
 echo "source .venv/bin/activate"
 
-# Activate virtual environment
-. .venv/bin/activate
+#!/bin/bash
 
-# Install dependencies
+# Create and activate the virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Upgrade pip
 pip install --upgrade pip
+
+# Install all dependencies at once (clean, complete)
 pip install -r requirements.txt
-pip install -U langchain-huggingface
-pip install torch
-pip install accelerate
 pip install langchain-huggingface
+pip install PyMuPDF
 
 
 # Ensure critical packages are installed (in case requirements.txt misses them)
