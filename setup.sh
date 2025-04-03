@@ -17,6 +17,7 @@ echo "source .venv/bin/activate"
 
 # Create and activate the virtual environment
 python3 -m venv .venv
+chmod +x .venv/bin/activate
 source .venv/bin/activate
 
 # Upgrade pip
