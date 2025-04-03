@@ -58,22 +58,29 @@ parser = argparse.ArgumentParser(description="AF TravelBot CLI")
 parser.add_argument("--mode", choices=["friendly", "raw"], default="friendly", help="Choose response style.")
 args = parser.parse_args()
 
-if __name__ == "__main__":
-    print("✈️ AF TravelBot is ready. Ask your JTR/DAFI questions.")
-    print(f"💡 Mode: {args.mode.capitalize()} Mode")
+retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 3})
 
+qa_chain = RetrievalQA.from_chain_type(
+    llm=llm,
+    retriever=retriever,
+    return_source_documents=True
+)
+
+def run_cli():
+    print("✈️ AF TravelBot is ready. Ask your JTR/DAFI questions.")
     while True:
         query = input("\n> ")
         if query.lower() in ["exit", "quit"]:
             break
+        result = qa_chain(query)
+        print("\nAnswer:\n", result["result"])
+        print("\nSources:")
+        for doc in result["source_documents"]:
+            print(f"- {doc.metadata['source']}")
 
-        retrieved = retriever.get_relevant_documents(query)
+if __name__ == "__main__":
+    run_cli()
 
-        if args.mode == "raw":
-            output = "\n\n".join(doc.page_content for doc in retrieved)
-        else:
-            pre_prompt = f"The user asked: '{query}'. Write a helpful, conversational introduction before showing regulation content."
-            preface = str(llm(pre_prompt)).strip()
-            output = f"{preface}\n\n---\n" + "\n\n".join(doc.page_content for doc in retrieved)
+# Ensure qa_chain is available for import
+__all__ = ["qa_chain"]
 
-        print(f"\n{output}\n\n---\nSources:\n{format_sources(retrieved)}")
