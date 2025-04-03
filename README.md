@@ -1,141 +1,79 @@
 # TravelBot
 
-**AF PCS Travel Assistant powered by RAG + LangChain + Hugging Face LLMs**
-
-TravelBot is a lightweight Retrieval-Augmented Generation (RAG) chatbot that answers questions using uploaded Joint Travel Regulation (JTR) and DAFI (Department of the Air Force Instruction) content. This version is designed to be deployed instantly in GitHub Codespaces.
+AF PCS Travel Assistant powered by Retrieval-Augmented Generation (RAG), Hugging Face models, and LangChain.
 
 ---
 
-## 🧰 Features
+## 🧠 Run Modes
 
-- Uses Hugging Face's `flan-t5-small` or `flan-t5-base` for fast, CPU-compatible inference
-- Supports LangChain's `RetrievalQA` pipeline with a local FAISS vectorstore
-- Semantic chunk indexing of `.txt` files placed in `rag/jtr_chunks/`
-- Persistent prompt guidance from `.txt` files in `context/`
-- Setup script builds your environment and prepares the index automatically
+You can use TravelBot through multiple entry points depending on your needs:
 
----
+### 1. `retrieve_context.py` – The Main Chatbot CLI
 
-## 🚀 Quick Start in Codespaces
+Supports two modes:
+- **Friendly mode** (default): uses an LLM to generate a helpful intro, then shows retrieved regulation chunks.
+- **Raw mode**: shows retrieved chunks only (no LLM).
 
-**⚠️ If setup fails**, you can re-run it manually:
+Run it like this:
 ```bash
-bash setup.sh
+python retrieve_context.py --mode friendly
+python retrieve_context.py --mode raw
 ```
 
-1. **Open this repo in GitHub Codespaces**
-2. Setup will run automatically from `devcontainer.json`
-3. After setup completes, activate your virtual environment:
+---
 
-   ```bash
-   source .venv/bin/activate
-   ```
+### 2. `chunkbot.py` – Direct Chunk Search
 
-4. Start the bot:
+- Retrieves the top 3 chunks using vector similarity.
+- No LLM, just raw regulation text.
+- Great for debugging or validating the source content.
 
-   ```bash
-   python app.py
-   ```
-
-5. Ask questions like:
-
-   - "How many days of parental leave can I take?"
-   - "What receipts do I need for my PCS move?"
-### 🧠 Option: Use ChunkBot Instead (Direct Regulation Viewer)
-
-Instead of running the AI summarizer by default, you can use the `chunkbot.py` tool.
-
+Run:
 ```bash
 python chunkbot.py
 ```
 
-This version will:
-- Retrieve the most relevant regulation `.txt` chunks from `rag/jtr_chunks/`
-- Show their contents clearly
-- Optionally summarize with AI
-
-This is ideal for accuracy and avoiding hallucinated answers.
-
 ---
 
-## 🛠 Folder Structure
+### 3. `app.py` – Alt Chatbot with Intro Context
 
+- Loads a system prompt from a file.
+- Uses LangChain's `RetrievalQA` for simpler setups.
+- Automatically trims inputs to stay under token limits.
+
+Run:
 ```bash
-├── app.py                  # Main CLI chat app
-├── setup.sh                # Environment setup script
-├── rag/
-│   ├── build_index.py      # Converts text chunks into FAISS vectorstore
-│   ├── retrieve_context.py # (optional) Context chunk retriever helper
-│   └── jtr_chunks/         # Folder for regulation .txt files
-├── context/                # Prompt-level context files (not embedded)
-├── vectordb/               # Saved FAISS index (auto-generated)
-├── requirements.txt        # Python dependencies
+python app.py
 ```
 
 ---
 
-## 📄 Adding Your Own Content
+## 🔄 Updating the Knowledge Base
 
-### 🔹 Regulation Files (JTR/DAFI)
-1. Add your `.txt` files to `rag/jtr_chunks/`
-2. Run:
+1. Place new PDFs in:
+```
+rag/source_docs/
+```
 
+2. Rebuild the chunks and vector index:
 ```bash
-python rag/build_index.py
+python update_knowledge_base.py
 ```
-
-This will rebuild the FAISS vector index.
-
-### 🔹 Prompt Context Files
-Add `.txt` files to the `context/` folder (e.g., `bot_intro.txt`, `tone.txt`, `definitions.txt`).  
-These are **automatically loaded and prepended** to each question to improve response quality and consistency.
 
 ---
 
-## 🔄 Switching Models
+## 🧰 Setup
 
-The default model is `flan-t5-small`. To improve performance:
-
-```python
-model_id = "google/flan-t5-base"
-```
-
-Update this line in `app.py` to improve answer quality at the cost of slightly more memory.
-
----
-
-## ⚙️ Switching to Local Ollama LLM (Optional)
-
-This bot supports both Hugging Face models and local Ollama setups.
-
-- `setup.sh` auto-detects your environment
-- For local mode, install [Ollama](https://ollama.com) and run:
-
+From the root of the repo:
 ```bash
-ollama pull tinyllama
+bash setup.sh
 ```
 
----
-
-## 📚 Referenced Sources
-
-- JTR PDF (03/01/2025 edition)
-- DAFI 36-3003 (7 August 2024)
-- Regulation-specific `.txt` files placed in `rag/jtr_chunks/`
-- Prompt formatting and tone guidance from `.txt` files in `context/`
+This will:
+- Create `.venv`
+- Install dependencies
+- Support Hugging Face and Ollama inference options
 
 ---
 
-## ✅ Status
-
-This is a working RAG prototype designed for rapid deployment, expansion, and experimentation.
-
-Coming soon:
-- [ ] Chat memory
-- [ ] Source citation formatting
-- [ ] Web UI (Gradio/FastAPI)
-- [ ] Auto-chunker for PDFs
-
----
-
-Contributions welcome — fork and extend!
+Let me know if you want this copied into your actual `README.md` file or merged with the existing contents.
