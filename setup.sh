@@ -67,4 +67,4 @@ fi
 
 echo ""
 echo "✅ Setup complete."
-echo "👉 To start: source .venv/bin/activate && python app.py"
+echo "👉 To start: source .venv/bin/activate && python app.py" , ".venv/bin/activate && python chunkbot.py" ".venv/bin/activate && python retrieve_context.py"
