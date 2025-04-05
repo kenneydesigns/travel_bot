@@ -1,6 +1,0 @@
-=== Training Travel for Schools and TDY ===
-
-- Orders must list the school/training location.
-- Use DTS for all travel vouchers.
-- Travel must be direct unless approved.
-- M&IE rate may be reduced for meals provided on site.

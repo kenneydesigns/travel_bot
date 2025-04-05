@@ -1,6 +1,0 @@
-=== Convalescent Leave ===
-- Granted for recovery after hospitalization, illness, or injury.
-- Requires documentation from a military treatment facility (MTF).
-- Not chargeable against leave balance.
-- Commanders must approve using AF Form 988.
-- Refer to DAFI 36-3003, Para. 6.1.

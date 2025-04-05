@@ -1,5 +1,0 @@
-=== Reintegration Leave ===
-- May be granted to members returning from combat deployments.
-- Often scheduled as part of the Deployment Transition Center (DTC) program.
-- May include both chargeable and non-chargeable leave types.
-- Refer to DAFI 36-3003 and DoDI 1327.06 guidelines.

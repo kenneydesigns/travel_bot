@@ -1,6 +1,0 @@
-=== Claim Submission Timeline ===
-
-- Submit within 5 business days after completing travel.
-- Claims not submitted within 30 days may be flagged.
-- DFAS has up to 30 business days to process.
-- Use eFinance tracker or DTS dashboard to follow up.

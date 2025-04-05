@@ -1,6 +1,0 @@
-=== Regular Leave ===
-- Charged against a member's leave balance.
-- Must be approved by the member’s supervisor or commander.
-- Submit through LeaveWeb or approved form.
-- Cannot be taken retroactively.
-- Refer to DAFI 36-3003, Section 2.1.

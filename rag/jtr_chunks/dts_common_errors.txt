@@ -1,9 +1,0 @@
-=== Common DTS Voucher Errors ===
-
-- Forgetting to attach lodging receipts
-- Overlapping or conflicting travel dates
-- Not selecting correct authorization or line of accounting
-- Submitting expenses outside of travel period
-- Failing to sign or route the document
-
-Always check for red exclamation marks and complete the pre-audit checklist.

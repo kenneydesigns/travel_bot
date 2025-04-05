@@ -1,7 +1,0 @@
-=== Mileage Reimbursement ===
-
-- Mileage is reimbursed for travel by POV (Privately Owned Vehicle) using DTMO rates.
-- Rates vary by year and vehicle type.
-- Reimbursement requires odometer readings or Google Maps printout.
-- Only one member per vehicle may claim mileage.
-- PCS mileage claimed via eFinance; TDY mileage via DTS.

@@ -1,7 +1,0 @@
-=== Dependent Travel During PCS ===
-
-- Dependents may be authorized to travel with or after the member.
-- Travel must be between authorized duty stations.
-- Include dependents on PCS orders to receive travel entitlements.
-- Must submit dependent travel documentation in eFinance.
-- Reimbursements include per diem and mileage (if traveling by POV).

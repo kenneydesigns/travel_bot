@@ -1,6 +1,0 @@
-=== Rental Car Policy ===
-
-- Must be authorized on orders or pre-approved in DTS.
-- Economy class required unless exception is approved.
-- Fuel receipts required for reimbursement.
-- Not authorized for personal errands or dependent use.

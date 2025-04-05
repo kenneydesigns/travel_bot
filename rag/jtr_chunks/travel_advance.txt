@@ -1,7 +1,0 @@
-=== Travel Advance Overview ===
-
-- Travel advances are available for PCS and other authorized travel.
-- Must be requested in eFinance or via DD Form 2560.
-- Advances are typically deducted from final settlement.
-- You may be responsible to repay any overage.
-- Include a justification and estimate of expected expenses.

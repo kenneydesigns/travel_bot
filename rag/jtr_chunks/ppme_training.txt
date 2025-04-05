@@ -1,6 +1,0 @@
-=== PPME and PCS Training ===
-
-- Members PCSing for the first time must complete required PCS training.
-- Access through MyLearning or AETC portals.
-- Topics include DTS, GTC, eFinance, TMO, and JTR basics.
-- Certificate of completion may be required to out-process.
