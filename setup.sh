@@ -1,71 +1,132 @@
 #!/bin/bash
 
-#!/bin/bash
-
 echo "🚀 TravelBot Setup Script"
 
-# Create folders early
-mkdir -p rag/jtr_chunks models web/templates
+# Redirect output to a log file
+exec > >(tee -i setup.log)
+exec 2>&1
 
-# Create virtual environment
-python3 -m venv .venv
-
-echo "💡 Virtual environment created. To activate manually:"
-echo "source .venv/bin/activate"
-
-#!/bin/bash
-
-# Create and activate the virtual environment
-python3 -m venv .venv
-chmod +x .venv/bin/activate
-source .venv/bin/activate
-
-# Upgrade pip
-pip install --upgrade pip
-
-# Install all dependencies at once (clean, complete)
-pip install -r requirements.txt
-pip install langchain-huggingface
-pip install PyMuPDF
-
-
-# Ensure critical packages are installed (in case requirements.txt misses them)
-pip install -U langchain-community transformers torch sentence-transformers faiss-cpu
-
-# Auto-build embeddings if chunk files exist
-echo "🧠 Building semantic index..."
-python rag/build_index.py
-
-# Detect mode and set app flags
-if [ "$CODESPACES" = "true" ]; then
-  echo "🌐 Detected Codespaces environment. Using Hugging Face mode by default."
-  sed -i.bak 's/USE_OLLAMA = True/USE_OLLAMA = False/' app.py
-  sed -i.bak 's/USE_OLLAMA = True/USE_OLLAMA = False/' ingest.py
-else
-  echo ""
-  echo "Choose the mode to run TravelBot:"
-  echo "1. Local (Ollama + TinyLLaMA)"
-  echo "2. Codespaces / Hugging Face (Flan-T5 or TinyLLaMA)"
-  read -p "Enter 1 or 2: " mode_choice
-
-  if [ "$mode_choice" == "1" ]; then
-    echo "🧠 Setting up for LOCAL mode using Ollama..."
-    if ! command -v ollama &> /dev/null; then
-        echo "⚠️ Ollama not found. Install it from https://ollama.com"
-    else
-        ollama pull tinyllama
-        sed -i.bak 's/USE_OLLAMA = False/USE_OLLAMA = True/' app.py
-        sed -i.bak 's/USE_OLLAMA = False/USE_OLLAMA = True/' ingest.py
-    fi
-  elif [ "$mode_choice" == "2" ]; then
-    echo "🌐 Using Hugging Face mode..."
-    sed -i.bak 's/USE_OLLAMA = True/USE_OLLAMA = False/' app.py
-    sed -i.bak 's/USE_OLLAMA = True/USE_OLLAMA = False/' ingest.py
-  else
-    echo "❌ Invalid choice. Please edit app.py manually."
-  fi
+# Check Python version
+echo "🔍 Checking Python version..."
+python_version=$(python3 --version 2>&1)
+echo "Python version: $python_version"
+if [[ "$python_version" != "Python 3.12"* ]]; then
+    echo "⚠️ Python 3.12 is required. Current version: $python_version"
+    exit 1
 fi
 
-echo ""
-echo "✅ Setup complete."
-echo "👉 To start: source .venv/bin/activate && python app.py" , ".venv/bin/activate && python chunkbot.py" ".venv/bin/activate && python retrieve_context.py"
+# Ensure pip is installed
+echo "🔍 Checking if pip is installed..."
+if ! command -v pip &> /dev/null; then
+    echo "❌ pip is not installed. Please install pip and try again."
+    exit 1
+else
+    echo "✅ pip is installed."
+fi
+
+# Create necessary folders
+echo "📂 Creating necessary folders..."
+mkdir -p rag/jtr_chunks models web/templates
+if [ $? -eq 0 ]; then
+    echo "✅ Folders created successfully."
+else
+    echo "❌ Failed to create folders."
+    exit 1
+fi
+
+# Create and activate the virtual environment
+echo "🐍 Setting up virtual environment..."
+if [ ! -d ".venv" ]; then
+    echo "🔧 Creating virtual environment..."
+    python3 -m venv .venv
+    if [ $? -eq 0 ]; then
+        echo "✅ Virtual environment created successfully."
+    else
+        echo "❌ Failed to create virtual environment."
+        exit 1
+    fi
+else
+    echo "✅ Virtual environment already exists."
+fi
+
+echo "🔍 Checking if virtual environment activation script exists..."
+if [ -f ".venv/bin/activate" ]; then
+    echo "✅ Activation script found. Activating virtual environment..."
+    source .venv/bin/activate
+    if [ $? -eq 0 ]; then
+        echo "✅ Virtual environment activated successfully."
+    else
+        echo "❌ Failed to activate virtual environment."
+        exit 1
+    fi
+else
+    echo "❌ Activation script not found. Recreate the virtual environment."
+    exit 1
+fi
+
+# Upgrade pip
+echo "⬆️ Upgrading pip..."
+pip install --upgrade pip
+if [ $? -eq 0 ]; then
+    echo "✅ pip upgraded successfully."
+else
+    echo "❌ Failed to upgrade pip."
+    exit 1
+fi
+
+# Install dependencies from requirements.txt
+echo "📦 Installing dependencies from requirements.txt..."
+if [ -f "requirements.txt" ]; then
+    pip install -r requirements.txt
+    if [ $? -eq 0 ]; then
+        echo "✅ Dependencies installed successfully."
+    else
+        echo "❌ Failed to install dependencies."
+        exit 1
+    fi
+else
+    echo "⚠️ requirements.txt not found. Skipping dependency installation."
+fi
+
+# Install additional critical packages
+echo "📦 Installing additional critical packages..."
+pip install langchain_community
+if [ $? -eq 0 ]; then
+    echo "✅ langchain_community installed successfully."
+else
+    echo "❌ Failed to install langchain_community."
+    exit 1
+fi
+
+# Installing transformers package
+echo "📦 Installing transformers package..."
+pip install transformers
+if [ $? -eq 0 ]; then
+    echo "✅ transformers installed successfully."
+else
+    echo "❌ Failed to install transformers."
+    exit 1
+fi
+
+# Installing PyTorch (CPU version) packages
+echo "📦 Installing PyTorch packages..."
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+if [ $? -eq 0 ]; then
+    echo "✅ PyTorch packages installed successfully."
+else
+    echo "❌ Failed to install PyTorch packages."
+    exit 1
+fi
+
+# Verify installation of critical packages
+echo "✅ Verifying installed packages..."
+for package in langchain-community transformers torch sentence-transformers faiss-cpu PyMuPDF; do
+    echo "🔍 Checking if $package is installed..."
+    pip show $package > /dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        echo "✅ $package is installed."
+    else
+        echo "❌ $package is not installed."
+        exit 1
+    fi
+done
