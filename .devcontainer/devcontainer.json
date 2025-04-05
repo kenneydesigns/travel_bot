@@ -1,0 +1,31 @@
+{
+  "name": "TravelBot",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/node:1": {}
+  },
+  "postCreateCommand": "bash setup.sh && source .venv/bin/activate",
+  "forwardPorts": [7860, 8000],
+  "portsAttributes": {
+    "7860": {
+      "label": "TravelBot Web UI",
+      "onAutoForward": "openBrowser"
+    },
+    "8000": {
+      "label": "TravelBot API",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  }
+}
